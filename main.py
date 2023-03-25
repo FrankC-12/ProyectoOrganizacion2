@@ -23,10 +23,10 @@ def registro(base_de_datos, indices):
                 elif x.isalpha():
                     contador_letra += 1
         break
-    titulo = input("Ingrese el título del juego: ") 
+    titulo = input("Ingrese el título del juego: ").title()
     while len(titulo) > 10 or not titulo.isalpha() and not titulo.isnumeric():
         print("Error, el título no puede contener mas de 10 caracteres o no puede tener caracteres especiales")
-        titulo = input("Ingrese el título del juego: ") 
+        titulo = input("Ingrese el título del juego: ").title() 
     precio = input("Introduzca el precio del juego: ")
     while not precio.isnumeric() or int(precio) not in range(1,1000):
         print("Error, introduzca un precio válido")
@@ -153,10 +153,10 @@ def buscar(base_de_datos):
         print(base_de_datos)
 
         while True:
-            titulo = input("Ingrese el título del juego: ") 
+            titulo = input("Ingrese el título del juego: ").title()
             while len(titulo) > 10 or not titulo.isalpha() and not titulo.isnumeric():
                 print("Error, el título no puede contener mas de 10 caracteres o no puede tener caracteres especiales")
-                titulo = input("Ingrese el título del juego: ")
+                titulo = input("Ingrese el título del juego: ").title()
             
             data = open("Rent_A_Game.txt", "r")
             encontrado = False
@@ -213,7 +213,7 @@ def alquiler(base_de_datos):
     juego_a = input("Introduzca el numero dle juego que desea alquilar: ")
     while not juego_a.isnumeric() or int(juego_a) > i+1:
         print("Error, introduzca un indice valido")
-        juego_a = input("Introduzca el numero dle juego que desea alquilar: ")
+        juego_a = input("Introduzca el numero del juego que desea alquilar: ")
 
     for x, y in base_de_datos.items():
         for i in range(0, len(y)):
@@ -232,7 +232,63 @@ def alquiler(base_de_datos):
                 juego = Juego(y[i].modelo,y[i].titulo, y[i].precio,y[i].status,y[i].overflow)
                 juego.database()
 
+def devolucion(base_de_datos):
+    base_de_datos = { "primero": [], "segundo": [], "tercero": []}
+    contador = 1
+    data = open("Rent_A_Game.txt", "r")
+    for x in data:
+        i = 0
+        if "\n" in x.split(",")[i+4]:
+            x.split(",")[i+4] = x.split(",")[i+4].replace(",", "")
+        juego = Juego(x.split(",")[i],x.split(",")[i+1],x.split(",")[i+2],x.split(",")[i+3],x.split(",")[i+4])
+        if contador <= 3:
+            base_de_datos["primero"].append(juego)
+            contador += 1
+        elif contador <= 6:
+            base_de_datos["segundo"].append(juego)
+            contador += 1
+        else:
+            base_de_datos["tercero"].append(juego)
+            contador += 1
     
+    print("Lista de Juegos:")
+    encontrado = False
+    titulos = []
+    for x, y in base_de_datos.items():
+        for i in range(0, len(y)):
+            if y[i].status == "ALQUILADO":
+                encontrado = True
+                print(f"Nombre: {y[i].titulo}")
+                print(f"Precio: {y[i].precio}")
+                print(f"Status: {y[i].status}\n")
+                titulos.append(y[i].titulo)
+    
+    if encontrado != True:
+        print("No hay ningun juego alquilado\n")
+    
+    else:
+        juego_a = input("Introduzca el nombre del juego que desea devolver: ").title()
+        while not juego_a.isalpha() or juego_a not in titulos:
+            print("Error, introduzca un titulo valido")
+            juego_a = input("Introduzca el nombre del juego que desea devolver: ").title()
+
+        for x, y in base_de_datos.items():
+            for i in range(0, len(y)):
+                if y[i].titulo == juego_a:
+                    y[i].status = "EN STOCK"
+        
+        data = open("Rent_A_Game.txt", "w")
+        data.close()
+
+        for x, y in base_de_datos.items():
+            for i in range(0,len(y)):
+                if "\n" in y[i].overflow:
+                    y[i].overflow = y[i].overflow.replace("\n", "")
+                    juego = Juego(y[i].modelo,y[i].titulo, y[i].precio,y[i].status,y[i].overflow)
+                    juego.database()
+                else:
+                    juego = Juego(y[i].modelo,y[i].titulo, y[i].precio,y[i].status,y[i].overflow)
+                    juego.database()   
 
 def mostrar(base_de_datos):
     for x, y in base_de_datos.items():
@@ -263,7 +319,7 @@ def main():
         elif opcion == "3":
             alquiler(base_de_datos)
         elif opcion == "4":
-            mostrar(base_de_datos)
+            devolucion(base_de_datos)
         elif opcion == "5":
             pass
         else:
