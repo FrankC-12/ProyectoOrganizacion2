@@ -1,8 +1,8 @@
 from Hash import Hash_Function
 from Juego import Juego
 
-def registro(base_de_datos):
-    contador = 1
+def registro(base_de_datos, indices):
+    contador = 0
     while True:
         modelo = input("Introduzca el código del modelo: ")
         contador_num = 0
@@ -31,13 +31,24 @@ def registro(base_de_datos):
     overflow = 0
     status = "EN STOCK"
 
+    indices[titulo] = contador
+    data = open("Index.txt", "w")
+    data.close()
+    data = open("Index.txt", "a")
+    i = 0
+    for x, y in indices.items():
+        titulo = x
+        contador += i
+        i += 1
+        data.write(f"{titulo},{contador}\n")
+
     juego = Juego(codigo, titulo, precio, status, overflow)
     juego.database()
 
-    if contador <= 3:
+    if contador < 3:
         base_de_datos["primero"].append(juego)
         contador += 1
-    elif contador <= 6:
+    elif contador < 6:
         base_de_datos["segundo"].append(juego)
         contador += 1
     else:
@@ -49,7 +60,7 @@ def registro(base_de_datos):
 
 
 
-def buscar(base_de_datos):
+def buscar(base_de_datos, indices):
     contador = 1
     data = open("Rent_A_Game.txt", "r")
     for x in data:
@@ -108,8 +119,6 @@ def buscar(base_de_datos):
             break 
 
 
-        
-
 
 def mostrar(base_de_datos):
     for x, y in base_de_datos.items():
@@ -125,6 +134,7 @@ def mostrar(base_de_datos):
 
 
 base_de_datos = { "primero": [], "segundo": [], "tercero": []}
+indices = {}
 def main():
     print("Bienvenido al sistema de registro de Rent - A - Game")
     print()
@@ -134,9 +144,9 @@ def main():
             print("Por favor ingrese un número de opción válido")
             opcion = input("Ingresa la operación que deseas realizar: \n>1.Insertar un nuevo juego \n2.Búsqueda de un juego \n3.Alquiler de un juego \n4.Devolución de un juego \n5.Eliminación de un juego \n6.Salir \n> ")
         if opcion == "1":
-            registro(base_de_datos)
+            registro(base_de_datos,indices)
         elif opcion == "2":
-            buscar(base_de_datos)
+            buscar(base_de_datos,indices)
         elif opcion == "3":
             mostrar(base_de_datos)
         elif opcion == "4":

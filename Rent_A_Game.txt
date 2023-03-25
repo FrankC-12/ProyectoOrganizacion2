@@ -1,1 +1,2 @@
-0faa63986bb1faf55858b55db97d0d2d, fifa, 200, EN STOCK, 0
+0faa63986bb1faf55858b55db97d0d2d, fifa, 20, EN STOCK, 0
+0e311e5b9704f28b4e8557e8fa3fbe7d, cod, 20, EN STOCK, 0
