@@ -3,17 +3,9 @@ from Juego import Juego
 
 def registro(base_de_datos, indices):
     contador = 0
-    while True:
-        modelo = input("Introduzca el código del modelo: ")
-        contador_num = 0
-        contador_letra = 0
-        for x in modelo:
-            if x.isnumeric():
-                contador_num += 1
-            elif x.isalpha():
-                contador_letra += 1
-        while contador_letra != 6 or contador_num != 2 or (contador_letra + contador_num) != 8:
-            print("Error, por favor ingrese un código válido")
+    data = open("Rent_A_Game.txt", "r")
+    if data.read() == "":
+        while True:
             modelo = input("Introduzca el código del modelo: ")
             contador_num = 0
             contador_letra = 0
@@ -22,50 +14,174 @@ def registro(base_de_datos, indices):
                     contador_num += 1
                 elif x.isalpha():
                     contador_letra += 1
-        break
-    titulo = input("Ingrese el título del juego: ").title()
-    while len(titulo) > 10 or not titulo.isalpha() and not titulo.isnumeric():
-        print("Error, el título no puede contener mas de 10 caracteres o no puede tener caracteres especiales")
-        titulo = input("Ingrese el título del juego: ").title() 
-    precio = input("Introduzca el precio del juego: ")
-    while not precio.isnumeric() or int(precio) not in range(1,1000):
-        print("Error, introduzca un precio válido")
+            while contador_letra != 6 or contador_num != 2 or (contador_letra + contador_num) != 8:
+                print("Error, por favor ingrese un código válido")
+                modelo = input("Introduzca el código del modelo: ")
+                contador_num = 0
+                contador_letra = 0
+                for x in modelo:
+                    if x.isnumeric():
+                        contador_num += 1
+                    elif x.isalpha():
+                        contador_letra += 1
+            break
+        titulo = input("Ingrese el título del juego: ").title()
+        while len(titulo) > 10 or not titulo.isalpha() and not titulo.isnumeric():
+            print("Error, el título no puede contener mas de 10 caracteres o no puede tener caracteres especiales")
+            titulo = input("Ingrese el título del juego: ").title() 
         precio = input("Introduzca el precio del juego: ")
+        while not precio.isnumeric() or int(precio) not in range(1,1000):
+            print("Error, introduzca un precio válido")
+            precio = input("Introduzca el precio del juego: ")
 
-    hashing = Hash_Function(modelo)
-    codigo = hashing.Hashing(modelo)
+        hashing = Hash_Function(modelo)
+        codigo = hashing.Hashing(modelo)
 
-    overflow = 0
-    status = "EN STOCK"
+        overflow = 0
+        status = "EN STOCK"
 
-    data = open("Index.txt", "r")
-    for x in data:
-        i = 0
-        if "\n" in x.split(",")[i+1]:
-            x.split(",")[i+1] = x.split(",")[i+1].replace("\n", "")
-        indices[x.split(",")[i]] = x.split(",")[i+1]
-    indices[titulo] = contador
-    data = open("Index.txt", "w")
-    data.close()
-    data = open("Index.txt", "a")
-    for x, y in indices.items():
-        titulo = x
-        data.write(f"{titulo},{contador}\n")
-        contador += 1
-    
+        data = open("Index.txt", "r")
+        for x in data:
+            i = 0
+            if "\n" in x.split(",")[i+1]:
+                x.split(",")[i+1] = x.split(",")[i+1].replace("\n", "")
+            indices[x.split(",")[i]] = x.split(",")[i+1]
+        indices[titulo] = contador
+        data = open("Index.txt", "w")
+        data.close()
+        data = open("Index.txt", "a")
+        for x, y in indices.items():
+            titulo = x
+            data.write(f"{titulo},{contador}\n")
+            contador += 1
+        
 
-    juego = Juego(codigo, titulo, precio, status, overflow)
-    juego.database()
+        juego = Juego(codigo, titulo, precio, status, overflow)
+        juego.database()
 
-    if contador < 3:
-        base_de_datos["primero"].append(juego)
-        contador += 1
-    elif contador < 6:
-        base_de_datos["segundo"].append(juego)
-        contador += 1
+        if contador < 3:
+            base_de_datos["primero"].append(juego)
+            contador += 1
+        elif contador < 6:
+            base_de_datos["segundo"].append(juego)
+            contador += 1
+        else:
+            base_de_datos["tercero"].append(juego)
+            contador += 1
     else:
-        base_de_datos["tercero"].append(juego)
-        contador += 1
+        contador = 0
+        print("aqui")
+        base_de_datos = { "primero": [], "segundo": [], "tercero": []}
+        modelos = []
+        titulos = []
+        data = open("Rent_A_Game.txt", "r")
+        for x in data:
+            i = 0
+            if "\n" in x.split(",")[i+4]:
+                x.split(",")[i+4] = x.split(",")[i+4].replace(",", "")
+            modelos.append(x.split(",")[i])
+            titulos.append(x.split(",")[i+1])
+            juego = Juego(x.split(",")[i],x.split(",")[i+1],x.split(",")[i+2],x.split(",")[i+3],x.split(",")[i+4])
+            if contador <= 3:
+                base_de_datos["primero"].append(juego)
+                contador += 1
+            elif contador <= 6:
+                base_de_datos["segundo"].append(juego)
+                contador += 1
+            else:
+                base_de_datos["tercero"].append(juego)
+                contador += 1
+        while True:
+            modelo = input("Introduzca el código del modelo: ")
+            contador_num = 0
+            contador_letra = 0
+            for x in modelo:
+                if x.isnumeric():
+                    contador_num += 1
+                elif x.isalpha():
+                    contador_letra += 1
+            while contador_letra != 6 or contador_num != 2 or (contador_letra + contador_num) != 8:
+                print("Error, por favor ingrese un código válido")
+                modelo = input("Introduzca el código del modelo: ")
+                contador_num = 0
+                contador_letra = 0
+                for x in modelo:
+                    if x.isnumeric():
+                        contador_num += 1
+                    elif x.isalpha():
+                        contador_letra += 1
+            hashing = Hash_Function(modelo)
+            codigo = hashing.Hashing(modelo)
+            encontrado = False
+            for x in modelos:
+                if codigo == x:
+                    encontrado = True
+                    break
+            if encontrado != True:
+                break
+            else:
+                print("Error, el codigo ya existe")
+
+        while True:
+            titulo = input("Ingrese el título del juego: ").title()
+            while len(titulo) > 10 or not titulo.isalpha() and not titulo.isnumeric():
+                print("Error, el título no puede contener mas de 10 caracteres o no puede tener caracteres especiales")
+                titulo = input("Ingrese el título del juego: ").title() 
+            
+
+            encontrado = False
+            print(titulos)
+            for x in titulos:
+                if x == titulo:
+                    encontrado = True
+                    break
+            if encontrado != True:
+                break
+            else:
+                print("Error, el titulo ya existe")
+
+        precio = input("Introduzca el precio del juego: ")
+        while not precio.isnumeric() or int(precio) not in range(1,1000):
+            print("Error, introduzca un precio válido")
+            precio = input("Introduzca el precio del juego: ")
+                    
+        hashing = Hash_Function(modelo)
+        codigo = hashing.Hashing(modelo)
+
+        overflow = 0
+        status = "EN STOCK"
+
+        data = open("Index.txt", "r")
+        indices = {}
+        for x in data:
+            i = 0
+            if "\n" in x.split(",")[i+1]:
+                x.split(",")[i+1] = x.split(",")[i+1].replace("\n", "")
+            indices[x.split(",")[i]] = x.split(",")[i+1]
+            indices[x.split(",")[i]] = x.split(",")[i+1]
+        indices[titulo] = contador
+        data = open("Index.txt", "w")
+        data.close()
+        data = open("Index.txt", "a")
+        contador_i = 0
+        for x, y in indices.items():
+            titulo = x
+            data.write(f"{titulo},{contador_i}\n")
+            contador_i += 1
+
+        juego = Juego(codigo, titulo, precio, status, overflow)
+        juego.database()
+        if contador < 3:
+            base_de_datos["primero"].append(juego)
+            contador += 1
+        elif contador < 6:
+            base_de_datos["segundo"].append(juego)
+            contador += 1
+        else:
+            base_de_datos["tercero"].append(juego)
+            contador += 1
+                
+
 
 def buscar(base_de_datos):
     opcion = input("Buscar por: \n1.Modelo \n2.Titulo \n> ")
