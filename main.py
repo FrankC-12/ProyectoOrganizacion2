@@ -1,6 +1,7 @@
 from Hash import Hash_Function
 from Juego import Juego
 
+""" Modulo de Registro de los juegos """
 def registro(base_de_datos, indices):
     contador = 0
     data = open("Rent_A_Game.txt", "r")
@@ -180,9 +181,8 @@ def registro(base_de_datos, indices):
         else:
             base_de_datos["tercero"].append(juego)
             contador += 1
-                
 
-
+""" Modulo de busqueda de juegos """
 def buscar(base_de_datos):
     opcion = input("Buscar por: \n1.Modelo \n2.Titulo \n> ")
     while not opcion.isnumeric() or int(opcion) not in range(1,3):
@@ -298,7 +298,7 @@ def buscar(base_de_datos):
             juego_e = y[int(indice)]
             juego_e.mostrar()
             break
-
+""" Modulo de alquiler de juegos """
 def alquiler(base_de_datos):
     base_de_datos = { "primero": [], "segundo": [], "tercero": []}
     contador = 1
@@ -347,6 +347,7 @@ def alquiler(base_de_datos):
                 juego = Juego(y[i].modelo,y[i].titulo, y[i].precio,y[i].status,y[i].overflow)
                 juego.database()
 
+""" Modulo de devoluciones de juegos """
 def devolucion(base_de_datos):
     base_de_datos = { "primero": [], "segundo": [], "tercero": []}
     contador = 1
@@ -405,15 +406,7 @@ def devolucion(base_de_datos):
                     juego = Juego(y[i].modelo,y[i].titulo, y[i].precio,y[i].status,y[i].overflow)
                     juego.database()   
 
-def mostrar(base_de_datos):
-    for x, y in base_de_datos.items():
-        for i in range(0, len(y)):
-            print(y[i].modelo)
-            print(y[i].titulo)
-            print(y[i].precio)
-            print(y[i].status)
-            print(y[i].overflow)
-
+""" Modulo de eliminar juegos """
 def eliminar(base_de_datos):
     base_de_datos = { "primero": [], "segundo": [], "tercero": []}
     contador = 1
@@ -476,6 +469,8 @@ def eliminar(base_de_datos):
 
 base_de_datos = { "primero": [], "segundo": [], "tercero": []}
 indices = {}
+
+""" Modulo Main """
 def main():
     print("Bienvenido al sistema de registro de Rent - A - Game")
     print()
