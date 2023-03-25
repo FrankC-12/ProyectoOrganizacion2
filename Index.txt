@@ -1,3 +1,2 @@
-fifa,0
-cod,1
-mario,2
+Fifa, 0
+Cod, 1

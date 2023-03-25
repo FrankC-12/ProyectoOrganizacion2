@@ -48,7 +48,6 @@ def registro(base_de_datos, indices):
     data = open("Index.txt", "w")
     data.close()
     data = open("Index.txt", "a")
-    print(indices)
     for x, y in indices.items():
         titulo = x
         data.write(f"{titulo},{contador}\n")
@@ -210,7 +209,7 @@ def alquiler(base_de_datos):
             print(f"Precio: {y[i].precio}")
             print(f"Status: {y[i].status}\n")
 
-    juego_a = input("Introduzca el numero dle juego que desea alquilar: ")
+    juego_a = input("Introduzca el numero del juego que desea alquilar: ")
     while not juego_a.isnumeric() or int(juego_a) > i+1:
         print("Error, introduzca un indice valido")
         juego_a = input("Introduzca el numero del juego que desea alquilar: ")
@@ -299,6 +298,63 @@ def mostrar(base_de_datos):
             print(y[i].status)
             print(y[i].overflow)
 
+def eliminar(base_de_datos):
+    base_de_datos = { "primero": [], "segundo": [], "tercero": []}
+    contador = 1
+    data = open("Rent_A_Game.txt", "r")
+    for x in data:
+        i = 0
+        if "\n" in x.split(",")[i+4]:
+            x.split(",")[i+4] = x.split(",")[i+4].replace(",", "")
+        juego = Juego(x.split(",")[i],x.split(",")[i+1],x.split(",")[i+2],x.split(",")[i+3],x.split(",")[i+4])
+        if contador <= 3:
+            base_de_datos["primero"].append(juego)
+            contador += 1
+        elif contador <= 6:
+            base_de_datos["segundo"].append(juego)
+            contador += 1
+        else:
+            base_de_datos["tercero"].append(juego)
+            contador += 1
+    print("Lista de Juegos:\n")
+    for x, y in base_de_datos.items():
+        for i in range(0, len(y)):
+            print(f"---------{i+1}--------")
+            print(f"Nombre: {y[i].titulo}")
+            print(f"Precio: {y[i].precio}")
+            print(f"Status: {y[i].status}\n")
+
+    juego_e = input("Introduzca el numero del juego que desea eliminar: ")
+    while not juego_e.isnumeric() or int(juego_e) > i+1:
+        print("Error, introduzca un indice valido")
+        juego_e = input("Introduzca el numero del juego que desea alquilar: ")
+
+    for x, y in base_de_datos.items():
+        for z in y:
+            y.pop(int(juego_e)-1)
+            print("Juego eliminado")
+            break
+    data = open("Index.txt", "w")
+    data.close()
+    data = open("Index.txt", "a")
+    contador = 0
+    for x, y in base_de_datos.items():
+        for z in y:
+            titulo = z.titulo
+            data.write(f"{titulo}, {contador}\n")
+            contador += 1
+            
+    data = open("Rent_A_Game.txt", "w")
+    data.close()
+    for x, y in base_de_datos.items():
+        for i in range(0,len(y)):
+            if "\n" in y[i].overflow:
+                y[i].overflow = y[i].overflow.replace("\n", "")
+                juego = Juego(y[i].modelo,y[i].titulo, y[i].precio,y[i].status,y[i].overflow)
+                juego.database()
+            else:
+                juego = Juego(y[i].modelo,y[i].titulo, y[i].precio,y[i].status,y[i].overflow)
+                juego.database()
 
 
 
@@ -321,7 +377,7 @@ def main():
         elif opcion == "4":
             devolucion(base_de_datos)
         elif opcion == "5":
-            pass
+            eliminar(base_de_datos)
         else:
             break
 main()
