@@ -8,7 +8,7 @@ class Juego():
 
     def database(self):
         data = open("Rent_A_Game.txt", "a")
-        data.write(f"{self.modelo}, {self.titulo}, {self.precio}, {self.status}, {self.overflow}\n")
+        data.write(f"{self.modelo},{self.titulo},{self.precio},{self.status},{self.overflow}\n")
         print("Se agrego el juego a la base de datos")
 
 
