@@ -12,14 +12,21 @@ def registro(base_de_datos, indices):
                 contador_num += 1
             elif x.isalpha():
                 contador_letra += 1
-        if contador_letra != 6 or contador_num != 2 or (contador_letra + contador_num) != 8:
+        while contador_letra != 6 or contador_num != 2 or (contador_letra + contador_num) != 8:
             print("Error, por favor ingrese un código válido")
-
-        titulo = input("Ingrese el título del juego: ") 
-        while len(titulo) > 10 or not titulo.isalpha() and not titulo.isnumeric():
-            print("Error, el título no puede contener mas de 10 caracteres o no puede tener caracteres especiales")
-            titulo = input("Ingrese el título del juego: ") 
+            modelo = input("Introduzca el código del modelo: ")
+            contador_num = 0
+            contador_letra = 0
+            for x in modelo:
+                if x.isnumeric():
+                    contador_num += 1
+                elif x.isalpha():
+                    contador_letra += 1
         break
+    titulo = input("Ingrese el título del juego: ") 
+    while len(titulo) > 10 or not titulo.isalpha() and not titulo.isnumeric():
+        print("Error, el título no puede contener mas de 10 caracteres o no puede tener caracteres especiales")
+        titulo = input("Ingrese el título del juego: ") 
     precio = input("Introduzca el precio del juego: ")
     while not precio.isnumeric() or int(precio) not in range(1,1000):
         print("Error, introduzca un precio válido")
@@ -31,15 +38,22 @@ def registro(base_de_datos, indices):
     overflow = 0
     status = "EN STOCK"
 
+    data = open("Index.txt", "r")
+    for x in data:
+        i = 0
+        if "\n" in x.split(",")[i+1]:
+            x.split(",")[i+1] = x.split(",")[i+1].replace("\n", "")
+        indices[x.split(",")[i]] = x.split(",")[i+1]
     indices[titulo] = contador
     data = open("Index.txt", "w")
     data.close()
     data = open("Index.txt", "a")
-    i = 0
+    print(indices)
     for x, y in indices.items():
         titulo = x
-        contador += i
-        i += 1
+        print(contador)
+        contador += 1
+        print(contador)
         data.write(f"{titulo},{contador}\n")
 
     juego = Juego(codigo, titulo, precio, status, overflow)

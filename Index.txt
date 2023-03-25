@@ -1,2 +1,5 @@
-fifa,0
-cod,1
+mario,1
+fifa,2
+cod,3
+sonic,4
+qa,5

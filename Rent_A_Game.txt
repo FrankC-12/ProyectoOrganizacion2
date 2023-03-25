@@ -1,2 +1,11 @@
 0faa63986bb1faf55858b55db97d0d2d, fifa, 20, EN STOCK, 0
 0e311e5b9704f28b4e8557e8fa3fbe7d, cod, 20, EN STOCK, 0
+42dcf678c6da01e7fa3ebe03cbe1f0e3, mario, 65, EN STOCK, 0
+0faa63986bb1faf55858b55db97d0d2d, mario, 20, EN STOCK, 0
+0faa63986bb1faf55858b55db97d0d2d, fifa, 20, EN STOCK, 0
+0e311e5b9704f28b4e8557e8fa3fbe7d, cod, 30, EN STOCK, 0
+0faa63986bb1faf55858b55db97d0d2d, sonic, 20, EN STOCK, 0
+42dcf678c6da01e7fa3ebe03cbe1f0e3, qa, 20, EN STOCK, 0
+0faa63986bb1faf55858b55db97d0d2d, qa, 20, EN STOCK, 0
+0faa63986bb1faf55858b55db97d0d2d, qa, 20, EN STOCK, 0
+0faa63986bb1faf55858b55db97d0d2d, qa, 20, EN STOCK, 0
